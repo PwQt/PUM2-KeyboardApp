@@ -42,30 +42,30 @@ public class PageFragment extends Fragment {
             }
             @Override
             public void onLongPress(MotionEvent event) {
-                ((MainActivity)getActivity()).speakKeyboard();
+                ((InputActivity)getActivity()).speakKeyboard();
             }
             @Override
             public boolean onSingleTapConfirmed(MotionEvent event) {
-                ((MainActivity)getActivity()).speakCharacter(message);
+                ((InputActivity)getActivity()).speakCharacter(message);
                 return true;
             }
             @Override
             public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
                 if (motionEvent.getY() - motionEvent1.getY() > SWIPE_MIN_DISTANCE && Math.abs(v1) > SWIPE_THRESHOLD_VELOCITY) {
-                    ((MainActivity)getActivity()).appendToKeyboard(message);
-                    ((MainActivity)getActivity()).speakKeyboard();
+                    ((InputActivity)getActivity()).appendToKeyboard(message);
+                    ((InputActivity)getActivity()).speakKeyboard();
                     return true;
                 } else if (motionEvent1.getY() - motionEvent.getY() > SWIPE_MIN_DISTANCE && Math.abs(v1) > SWIPE_THRESHOLD_VELOCITY) {
-                    ((MainActivity)getActivity()).removeFromKeyboard();
-                    ((MainActivity)getActivity()).speakKeyboard();
+                    ((InputActivity)getActivity()).removeFromKeyboard();
+                    ((InputActivity)getActivity()).speakKeyboard();
                     return true;
                 }
                 return false;
             }
             @Override
             public boolean onDoubleTap(MotionEvent event){
-                ((MainActivity)getActivity()).appendToKeyboard(" ");
-                ((MainActivity)getActivity()).speakKeyboard();
+                ((InputActivity)getActivity()).appendToKeyboard(" ");
+                ((InputActivity)getActivity()).speakKeyboard();
                 return true;
             }
         });
