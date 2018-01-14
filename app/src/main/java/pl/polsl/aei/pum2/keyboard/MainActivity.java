@@ -33,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
         buttonVibrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toast = Toast.makeText(getApplicationContext(), "HAHAHAHAHAHAAHAH", Toast.LENGTH_LONG);
-                toast.show();
+                try {
+                    Intent intent = new Intent(getApplicationContext(), TestInputActivity.class);
+                    startActivity(intent);
+                } catch (Exception ex) {
+                    toast = Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 

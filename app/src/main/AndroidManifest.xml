@@ -21,9 +21,11 @@
         </activity>
         <activity
             android:name=".InputActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".TestInputActivity"
+            android:label="@string/title_activity_test_input"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
