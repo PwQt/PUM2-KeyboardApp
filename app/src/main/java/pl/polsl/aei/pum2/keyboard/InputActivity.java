@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class InputActivity extends FragmentActivity {
@@ -34,6 +37,7 @@ public class InputActivity extends FragmentActivity {
                 comparingLettersArrayIterator = 1;
                 textToCompare.setText(data.toUpperCase());
                 comparingLettersArray = data.split("");
+
             }
         }
         SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager());
@@ -88,11 +92,11 @@ public class InputActivity extends FragmentActivity {
     }
     public void appendToKeyboard(String text){
         String oldText = textView.getText().toString();
-        if (comparingLettersArray.length > 0 && comparingLettersArrayIterator <= comparingLettersArray.length - 1) {
+        if (comparingLettersArray.length > 0 && comparingLettersArrayIterator < comparingLettersArray.length) {
             if (text.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase())) {
                 Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                 v.vibrate(500);
-                comparingLettersArrayIterator++;
+                comparingLettersArrayIterator = (comparingLettersArrayIterator == comparingLettersArray.length) ? comparingLettersArrayIterator : comparingLettersArrayIterator + 1;
             }
         }
         textView.setText(oldText + text);
@@ -105,14 +109,18 @@ public class InputActivity extends FragmentActivity {
     }
     public void removeFromKeyboard(){
         String keyboardString = textView.getText().toString();
-        if (keyboardString != null && keyboardString.length() > 0){
-            String text = keyboardString.substring(keyboardString.length() - 1, keyboardString.length());
-            textView.setText(keyboardString.substring(0, keyboardString.length() - 1));
-            if (comparingLettersArrayIterator > 1 && text.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase())) {
-                comparingLettersArrayIterator--;
+        try {
+            if (keyboardString != null && keyboardString.length() > 0) {
+                String lastLetter = keyboardString.substring(keyboardString.length() - 1, keyboardString.length());
+                textView.setText(keyboardString.substring(0, keyboardString.length() - 1));
+                if (comparingLettersArrayIterator > 1 && lastLetter.equals(comparingLettersArray[comparingLettersArrayIterator - 1].toUpperCase())) {
+                    comparingLettersArrayIterator--;
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Brak znaków w klawiaturze!", Toast.LENGTH_LONG).show();
             }
-        } else {
-            Toast.makeText(getApplicationContext(), "Brak znaków w klawiaturze!", Toast.LENGTH_LONG).show();
+        } catch (Exception ex ){
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }
