@@ -3,6 +3,7 @@ package pl.polsl.aei.pum2.keyboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -17,13 +18,24 @@ import java.util.Locale;
 public class InputActivity extends FragmentActivity {
     ViewPager viewPager;
     TextToSpeech tts;
-    TextView textView;
+    TextView textView, textToCompare;
+    String[] comparingLettersArray = {};
+    int comparingLettersArrayIterator = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_activity);
         viewPager = findViewById(R.id.view_pager);
+        textToCompare = findViewById(R.id.textToCompare);
+        if (getIntent().getExtras() != null){
+            String data = getIntent().getStringExtra("EditTextTest");
+            if (data.length() > 0) {
+                comparingLettersArrayIterator = 1;
+                textToCompare.setText(data.toUpperCase());
+                comparingLettersArray = data.split("");
+            }
+        }
         SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager());
         viewPager.setAdapter(swipeAdapter);
         viewPager.setCurrentItem(1, false);
@@ -76,6 +88,13 @@ public class InputActivity extends FragmentActivity {
     }
     public void appendToKeyboard(String text){
         String oldText = textView.getText().toString();
+        if (comparingLettersArray.length > 0 && comparingLettersArrayIterator <= comparingLettersArray.length - 1) {
+            if (text.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase())) {
+                Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                v.vibrate(500);
+                comparingLettersArrayIterator++;
+            }
+        }
         textView.setText(oldText + text);
     }
     public void speakKeyboard(){
@@ -87,7 +106,11 @@ public class InputActivity extends FragmentActivity {
     public void removeFromKeyboard(){
         String keyboardString = textView.getText().toString();
         if (keyboardString != null && keyboardString.length() > 0){
+            String text = keyboardString.substring(keyboardString.length() - 1, keyboardString.length());
             textView.setText(keyboardString.substring(0, keyboardString.length() - 1));
+            if (comparingLettersArrayIterator > 1 && text.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase())) {
+                comparingLettersArrayIterator--;
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Brak znaków w klawiaturze!", Toast.LENGTH_LONG).show();
         }

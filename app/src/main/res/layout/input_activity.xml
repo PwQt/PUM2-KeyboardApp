@@ -13,7 +13,8 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/viewKeyboardText"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/viewKeyboardText"
@@ -25,6 +26,17 @@
         android:text=""
         android:textSize="40dp"
         android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/textToCompare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/back_input_button"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="24dp"
+        android:text=""
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/back_input_button"

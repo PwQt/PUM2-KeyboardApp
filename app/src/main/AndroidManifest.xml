@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.polsl.aei.pum2.keyboard">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".LettersArray"
         android:allowBackup="true"
@@ -24,8 +25,7 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".TestInputActivity"
-            android:label="@string/title_activity_test_input"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
