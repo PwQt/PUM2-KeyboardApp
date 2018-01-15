@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Klawiatura PUM 2</string>
     <string name="title_activity_test_input">TestInputActivity</string>
+    <string name="send">Wyślij</string>
+    <string name="returnButtonText">Powrót</string>
 
 </resources>

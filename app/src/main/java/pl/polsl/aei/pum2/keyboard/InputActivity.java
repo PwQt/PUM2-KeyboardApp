@@ -24,7 +24,7 @@ public class InputActivity extends FragmentActivity {
     TextView textView, textToCompare;
     String[] comparingLettersArray = {};
     int comparingLettersArrayIterator = 0;
-
+    boolean flag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,6 @@ public class InputActivity extends FragmentActivity {
         if (getIntent().getExtras() != null){
             String data = getIntent().getStringExtra("EditTextTest");
             if (data.length() > 0) {
-                comparingLettersArrayIterator = 1;
                 textToCompare.setText(data.toUpperCase());
                 comparingLettersArray = data.split("");
 
@@ -92,12 +91,21 @@ public class InputActivity extends FragmentActivity {
     }
     public void appendToKeyboard(String text){
         String oldText = textView.getText().toString();
-        if (comparingLettersArray.length > 0 && comparingLettersArrayIterator < comparingLettersArray.length) {
-            if (text.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase())) {
-                Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                v.vibrate(500);
-                comparingLettersArrayIterator = (comparingLettersArrayIterator == comparingLettersArray.length) ? comparingLettersArrayIterator : comparingLettersArrayIterator + 1;
+        try {
+            if (comparingLettersArray.length > 0 &&
+                    comparingLettersArrayIterator < comparingLettersArray.length &&
+                    flag) {
+                int tempIterator = (comparingLettersArrayIterator + 1 == comparingLettersArray.length) ? comparingLettersArrayIterator : comparingLettersArrayIterator + 1;
+                if (text.equals(comparingLettersArray[tempIterator].toUpperCase())) {
+                    Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    v.vibrate(500);
+                    comparingLettersArrayIterator++;
+                    if (tempIterator +1 == comparingLettersArray.length)
+                        flag = false;
+                }
             }
+        } catch (Exception ex){
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
         textView.setText(oldText + text);
     }
@@ -113,13 +121,20 @@ public class InputActivity extends FragmentActivity {
             if (keyboardString != null && keyboardString.length() > 0) {
                 String lastLetter = keyboardString.substring(keyboardString.length() - 1, keyboardString.length());
                 textView.setText(keyboardString.substring(0, keyboardString.length() - 1));
-                if (comparingLettersArrayIterator > 1 && lastLetter.equals(comparingLettersArray[comparingLettersArrayIterator - 1].toUpperCase())) {
+                if (keyboardString.length() == comparingLettersArrayIterator)
+                    flag = true;
+
+                if (comparingLettersArrayIterator > 0 &&
+                        keyboardString.length() == comparingLettersArrayIterator &&
+                        lastLetter.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase()) &&
+                        flag) {
                     comparingLettersArrayIterator--;
+
                 }
             } else {
                 Toast.makeText(getApplicationContext(), "Brak znaków w klawiaturze!", Toast.LENGTH_LONG).show();
             }
-        } catch (Exception ex ){
+        } catch (Exception ex){
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
