@@ -100,14 +100,14 @@ public class InputActivity extends FragmentActivity {
                     Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
                     v.vibrate(500);
                     comparingLettersArrayIterator++;
-                    if (tempIterator +1 == comparingLettersArray.length)
+                    if (tempIterator + 1 == comparingLettersArray.length)
                         flag = false;
                 }
             }
         } catch (Exception ex){
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-        textView.setText(oldText + text);
+        textView.setText(String.format("%s%s", oldText, text));
     }
     public void speakKeyboard(){
         tts.speak(textView.getText().toString(), TextToSpeech.QUEUE_FLUSH,null, null);
@@ -118,10 +118,12 @@ public class InputActivity extends FragmentActivity {
     public void removeFromKeyboard(){
         String keyboardString = textView.getText().toString();
         try {
-            if (keyboardString != null && keyboardString.length() > 0) {
+            if (keyboardString.length() > 0) {
                 String lastLetter = keyboardString.substring(keyboardString.length() - 1, keyboardString.length());
                 textView.setText(keyboardString.substring(0, keyboardString.length() - 1));
-                if (keyboardString.length() == comparingLettersArrayIterator)
+
+                if (keyboardString.length() == comparingLettersArrayIterator &&
+                        lastLetter.equals(comparingLettersArray[comparingLettersArrayIterator].toUpperCase()))
                     flag = true;
 
                 if (comparingLettersArrayIterator > 0 &&
